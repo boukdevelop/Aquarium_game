@@ -1,0 +1,99 @@
+// ========== ImGuiManager.h ==========
+#pragma once
+#include <SDL3/SDL.h>
+
+class ImGuiManager {
+public:
+    ImGuiManager();
+    ~ImGuiManager();
+    
+    bool initialize(SDL_Window* window, SDL_Renderer* renderer);
+    void shutdown();
+    
+    void beginFrame();
+    void endFrame();
+    
+    void processEvent(const SDL_Event& event);
+    
+    bool wantCaptureMouse() const;
+    bool wantCaptureKeyboard() const;
+    
+private:
+    bool m_initialized;
+};
+
+// ========== ImGuiManager.cpp ==========
+#include "ImGuiManager.h"
+#include "imgui.h"
+#include "imgui_impl_sdl3.h"
+#include "imgui_impl_sdlrenderer3.h"
+
+ImGuiManager::ImGuiManager() : m_initialized(false) {
+}
+
+ImGuiManager::~ImGuiManager() {
+    shutdown();
+}
+
+bool ImGuiManager::initialize(SDL_Window* window, SDL_Renderer* renderer) {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    
+    // Style
+    ImGui::StyleColorsDark();
+    
+    // Personnalisation du thème aquatique
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowRounding = 8.0f;
+    style.FrameRounding = 4.0f;
+    style.GrabRounding = 4.0f;
+    
+    ImVec4* colors = style.Colors;
+    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.3f, 0.4f, 0.95f);
+    colors[ImGuiCol_TitleBg] = ImVec4(0.05f, 0.2f, 0.3f, 1.0f);
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.1f, 0.4f, 0.5f, 1.0f);
+    colors[ImGuiCol_Button] = ImVec4(0.2f, 0.5f, 0.6f, 1.0f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.6f, 0.7f, 1.0f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.1f, 0.4f, 0.5f, 1.0f);
+    
+    // Initialiser les backends
+    ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
+    ImGui_ImplSDLRenderer3_Init(renderer);
+    
+    m_initialized = true;
+    return true;
+}
+
+void ImGuiManager::shutdown() {
+    if (m_initialized) {
+        ImGui_ImplSDLRenderer3_Shutdown();
+        ImGui_ImplSDL3_Shutdown();
+        ImGui::DestroyContext();
+        m_initialized = false;
+    }
+}
+
+void ImGuiManager::beginFrame() {
+    ImGui_ImplSDLRenderer3_NewFrame();
+    ImGui_ImplSDL3_NewFrame();
+    ImGui::NewFrame();
+}
+
+void ImGuiManager::endFrame() {
+    ImGui::Render();
+    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void ImGuiManager::processEvent(const SDL_Event& event) {
+    ImGui_ImplSDL3_ProcessEvent(&event);
+}
+
+bool ImGuiManager::wantCaptureMouse() const {
+    return ImGui::GetIO().WantCaptureMouse;
+}
+
+bool ImGuiManager::wantCaptureKeyboard() const {
+    return ImGui::GetIO().WantCaptureKeyboard;
+}

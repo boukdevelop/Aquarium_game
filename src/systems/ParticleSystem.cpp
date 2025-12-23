@@ -1,0 +1,84 @@
+// ========== ParticleSystem.cpp ==========
+#include "ParticleSystem.h"
+#include "utils/Config.h"
+#include "utils/Math.h"
+
+ParticleSystem::ParticleSystem() : m_spawnTimer(0.0f)
+{
+    m_bubbles.resize(Config::MAX_BUBBLES);
+    for (auto &b : m_bubbles)
+    {
+        b.active = false;
+    }
+}
+
+void ParticleSystem::update(float deltaTime)
+{
+    m_spawnTimer += deltaTime;
+
+    // Spawn automatique de bulles
+    if (m_spawnTimer >= 1.0f / Config::BUBBLE_SPAWN_RATE)
+    {
+        m_spawnTimer = 0.0f;
+        float x = Math::randomFloat(50, Config::AQUARIUM_WIDTH - 50);
+        float y = Config::WATER_BOTTOM_Y - 20;
+        spawnBubble(Vector2D(x, y));
+    }
+
+    // Update bulles existantes
+    for (auto &bubble : m_bubbles)
+    {
+        if (!bubble.active)
+            continue;
+
+        bubble.age += deltaTime;
+
+        if (bubble.age >= bubble.lifetime ||
+            bubble.position.y < Config::WATER_SURFACE_Y)
+        {
+            bubble.active = false;
+            continue;
+        }
+
+        bubble.position += bubble.velocity * deltaTime;
+
+        // Mouvement oscillant
+        bubble.position.x += std::sin(bubble.age * 3.0f) * 0.5f;
+    }
+}
+
+void ParticleSystem::render(SDL_Renderer *renderer)
+{
+    SDL_SetRenderDrawColor(renderer, 200, 220, 255, 150);
+
+    for (const auto &bubble : m_bubbles)
+    {
+        if (!bubble.active)
+            continue;
+
+        // Dessiner la bulle comme un cercle
+        SDL_FRect rect = {
+            bubble.position.x - bubble.size / 2,
+            bubble.position.y - bubble.size / 2,
+            bubble.size,
+            bubble.size};
+        SDL_RenderFillRect(renderer, &rect);
+    }
+}
+
+void ParticleSystem::spawnBubble(const Vector2D &position)
+{
+    for (auto &bubble : m_bubbles)
+    {
+        if (!bubble.active)
+        {
+            bubble.position = position;
+            bubble.velocity = Vector2D(0, -Config::BUBBLE_RISE_SPEED);
+            bubble.size = Math::randomFloat(3.0f, 8.0f);
+            bubble.lifetime = Math::randomFloat(5.0f, 10.0f);
+            bubble.age = 0.0f;
+            bubble.active = true;
+            break;
+        }
+    }
+}

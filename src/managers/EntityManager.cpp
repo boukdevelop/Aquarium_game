@@ -1,0 +1,154 @@
+// ========== EntityManager.cpp ==========
+#include "EntityManager.h"
+
+EntityManager::EntityManager()
+{
+}
+
+EntityManager::~EntityManager()
+{
+    clear();
+}
+
+void EntityManager::update(float deltaTime)
+{
+    // Update all entities
+    for (auto *fish : m_fish)
+    {
+        if (fish && fish->isActive())
+        {
+            fish->update(deltaTime);
+        }
+    }
+
+    for (auto *food : m_food)
+    {
+        if (food && food->isActive())
+        {
+            food->update(deltaTime);
+        }
+    }
+
+    for (auto *deco : m_decorations)
+    {
+        if (deco && deco->isActive())
+        {
+            deco->update(deltaTime);
+        }
+    }
+
+    cleanupInactive();
+}
+
+void EntityManager::render(SDL_Renderer *renderer)
+{
+    // Render decorations first (background)
+    for (auto *deco : m_decorations)
+    {
+        if (deco && deco->isActive())
+        {
+            deco->render(renderer);
+        }
+    }
+
+    // Render food
+    for (auto *food : m_food)
+    {
+        if (food && food->isActive())
+        {
+            food->render(renderer);
+        }
+    }
+
+    // Render fish (foreground)
+    for (auto *fish : m_fish)
+    {
+        if (fish && fish->isActive())
+        {
+            fish->render(renderer);
+        }
+    }
+}
+
+void EntityManager::clear()
+{
+    for (auto *fish : m_fish)
+        delete fish;
+    for (auto *food : m_food)
+        delete food;
+    for (auto *deco : m_decorations)
+        delete deco;
+
+    m_fish.clear();
+    m_food.clear();
+    m_decorations.clear();
+}
+
+Fish *EntityManager::addFish(FishType type, const Vector2D &position)
+{
+    Fish *fish = new Fish(type, position);
+    m_fish.push_back(fish);
+    return fish;
+}
+
+Food *EntityManager::addFood(const Vector2D &position)
+{
+    Food *food = new Food(position);
+    m_food.push_back(food);
+    return food;
+}
+
+Decoration *EntityManager::addDecoration(DecorationType type, const Vector2D &position)
+{
+    Decoration *deco = new Decoration(type, position);
+    m_decorations.push_back(deco);
+    return deco;
+}
+
+int EntityManager::getFoodCount() const
+{
+    int count = 0;
+    for (auto *food : m_food)
+    {
+        if (food && food->isActive())
+            count++;
+    }
+    return count;
+}
+
+float EntityManager::getAverageHunger() const
+{
+    if (m_fish.empty())
+        return 0.0f;
+
+    float totalHunger = 0.0f;
+    int activeCount = 0;
+
+    for (auto *fish : m_fish)
+    {
+        if (fish && fish->isActive())
+        {
+            totalHunger += fish->getHunger();
+            activeCount++;
+        }
+    }
+
+    return activeCount > 0 ? totalHunger / activeCount : 0.0f;
+}
+
+void EntityManager::cleanupInactive()
+{
+    // Remove inactive food
+    m_food.erase(
+        std::remove_if(m_food.begin(), m_food.end(),
+                       [](Food *f)
+                       {
+                           if (!f->isActive())
+                           {
+                               delete f;
+                               return true;
+                           }
+                           return false;
+                       }),
+        m_food.end());
+}

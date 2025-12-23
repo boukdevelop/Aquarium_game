@@ -1,0 +1,154 @@
+// ========== FishBehavior.h ==========
+#pragma once
+#include "entities/Fish.h"
+#include "entities/Food.h"
+#include <vector>
+
+class FishBehavior {
+public:
+    static void applyFlocking(Fish* fish, const std::vector<Fish*>& allFish);
+    static void seekFood(Fish* fish, const std::vector<Food*>& allFood);
+    static void avoidBorders(Fish* fish);
+    
+private:
+    static Vector2D calculateCohesion(Fish* fish, const std::vector<Fish*>& neighbors);
+    static Vector2D calculateSeparation(Fish* fish, const std::vector<Fish*>& neighbors);
+    static Vector2D calculateAlignment(Fish* fish, const std::vector<Fish*>& neighbors);
+    static std::vector<Fish*> getNeighbors(Fish* fish, const std::vector<Fish*>& allFish);
+};
+
+// ========== FishBehavior.cpp ==========
+#include "FishBehavior.h"
+#include "utils/Config.h"
+#include <algorithm>
+
+void FishBehavior::applyFlocking(Fish* fish, const std::vector<Fish*>& allFish) {
+    auto neighbors = getNeighbors(fish, allFish);
+    
+    if (neighbors.empty()) return;
+    
+    Vector2D cohesion = calculateCohesion(fish, neighbors);
+    Vector2D separation = calculateSeparation(fish, neighbors);
+    Vector2D alignment = calculateAlignment(fish, neighbors);
+    
+    fish->applyForce(cohesion * Config::COHESION_WEIGHT);
+    fish->applyForce(separation * Config::SEPARATION_WEIGHT);
+    fish->applyForce(alignment * Config::ALIGNMENT_WEIGHT);
+}
+
+void FishBehavior::seekFood(Fish* fish, const std::vector<Food*>& allFood) {
+    if (fish->getHunger() < 50.0f) return; // Pas assez affamé
+    
+    Food* nearest = nullptr;
+    float minDist = std::numeric_limits<float>::max();
+    
+    for (auto* food : allFood) {
+        if (!food->isActive()) continue;
+        
+        float dist = fish->getPosition().distanceTo(food->getPosition());
+        if (dist < minDist) {
+            minDist = dist;
+            nearest = food;
+        }
+    }
+    
+    if (nearest && minDist < 300.0f) {
+        Vector2D desired = nearest->getPosition() - fish->getPosition();
+        desired = desired.normalized() * Config::FISH_MAX_SPEED;
+        Vector2D steer = desired - fish->getVelocity();
+        fish->applyForce(steer.limit(2.0f) * Config::FOOD_SEEK_WEIGHT);
+    }
+}
+
+void FishBehavior::avoidBorders(Fish* fish) {
+    Vector2D force = Vector2D::zero();
+    const float margin = 100.0f;
+    const float turnForce = 2.0f;
+    
+    Vector2D pos = fish->getPosition();
+    
+    if (pos.x < margin) {
+        force.x = turnForce;
+    } else if (pos.x > Config::AQUARIUM_WIDTH - margin) {
+        force.x = -turnForce;
+    }
+    
+    if (pos.y < Config::WATER_SURFACE_Y + margin) {
+        force.y = turnForce;
+    } else if (pos.y > Config::WATER_BOTTOM_Y - margin) {
+        force.y = -turnForce;
+    }
+    
+    if (force.lengthSquared() > 0) {
+        fish->applyForce(force * Config::BORDER_AVOID_WEIGHT);
+    }
+}
+
+Vector2D FishBehavior::calculateCohesion(Fish* fish, const std::vector<Fish*>& neighbors) {
+    Vector2D center = Vector2D::zero();
+    
+    for (auto* other : neighbors) {
+        center += other->getPosition();
+    }
+    
+    if (!neighbors.empty()) {
+        center = center / static_cast<float>(neighbors.size());
+        Vector2D desired = center - fish->getPosition();
+        return desired.normalized();
+    }
+    
+    return Vector2D::zero();
+}
+
+Vector2D FishBehavior::calculateSeparation(Fish* fish, const std::vector<Fish*>& neighbors) {
+    Vector2D steer = Vector2D::zero();
+    int count = 0;
+    
+    for (auto* other : neighbors) {
+        float dist = fish->getPosition().distanceTo(other->getPosition());
+        
+        if (dist > 0 && dist < Config::FISH_SEPARATION_RADIUS) {
+            Vector2D diff = fish->getPosition() - other->getPosition();
+            diff = diff.normalized() / dist; // Plus proche = plus de force
+            steer += diff;
+            count++;
+        }
+    }
+    
+    if (count > 0) {
+        steer = steer / static_cast<float>(count);
+        return steer.normalized();
+    }
+    
+    return Vector2D::zero();
+}
+
+Vector2D FishBehavior::calculateAlignment(Fish* fish, const std::vector<Fish*>& neighbors) {
+    Vector2D avgVel = Vector2D::zero();
+    
+    for (auto* other : neighbors) {
+        avgVel += other->getVelocity();
+    }
+    
+    if (!neighbors.empty()) {
+        avgVel = avgVel / static_cast<float>(neighbors.size());
+        return avgVel.normalized();
+    }
+    
+    return Vector2D::zero();
+}
+
+std::vector<Fish*> FishBehavior::getNeighbors(Fish* fish, const std::vector<Fish*>& allFish) {
+    std::vector<Fish*> neighbors;
+    
+    for (auto* other : allFish) {
+        if (other == fish || !other->isActive()) continue;
+        
+        float dist = fish->getPosition().distanceTo(other->getPosition());
+        if (dist < Config::FISH_DETECTION_RADIUS) {
+            neighbors.push_back(other);
+        }
+    }
+    
+    return neighbors;
+}

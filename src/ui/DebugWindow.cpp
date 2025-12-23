@@ -1,0 +1,59 @@
+// ========== DebugWindow.cpp ==========
+#include "DebugWindow.h"
+#include "imgui.h"
+
+DebugWindow::DebugWindow()
+    : m_fishSpeedMultiplier(1.0f), m_foodSpawnRate(1.0f), m_showColliders(false), m_showFPS(true)
+{
+}
+
+void DebugWindow::render(bool *showDebug)
+{
+    if (!*showDebug)
+        return;
+
+    ImGui::SetNextWindowPos(ImVec2(420, 50), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_FirstUseEver);
+
+    if (ImGui::Begin("🔧 Debug", showDebug))
+    {
+        ImGui::Text("Outils de développement");
+        ImGui::Separator();
+
+        if (ImGui::CollapsingHeader("Paramètres des poissons",
+                                    ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::SliderFloat("Vitesse poissons", &m_fishSpeedMultiplier,
+                               0.1f, 3.0f, "%.1fx");
+            ImGui::Checkbox("Afficher colliders", &m_showColliders);
+        }
+
+        if (ImGui::CollapsingHeader("Système de nourriture"))
+        {
+            ImGui::SliderFloat("Taux spawn nourriture", &m_foodSpawnRate,
+                               0.1f, 5.0f, "%.1fx");
+        }
+
+        if (ImGui::CollapsingHeader("Performance"))
+        {
+            ImGui::Checkbox("Afficher FPS", &m_showFPS);
+            ImGui::Text("Frame time: %.3f ms",
+                        ImGui::GetIO().DeltaTime * 1000.0f);
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Réinitialiser paramètres", ImVec2(-1, 0)))
+        {
+            m_fishSpeedMultiplier = 1.0f;
+            m_foodSpawnRate = 1.0f;
+            m_showColliders = false;
+        }
+
+        ImGui::Spacing();
+        ImGui::TextWrapped("💡 Ces paramètres permettent de tweaker "
+                           "le comportement sans recompiler.");
+    }
+
+    ImGui::End();
+}
