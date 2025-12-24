@@ -1,4 +1,3 @@
-// ========== ParticleSystem.h ==========
 #pragma once
 #include "utils/Vector2D.h"
 #include <SDL3/SDL.h>

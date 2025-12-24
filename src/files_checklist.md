@@ -80,14 +80,13 @@
 ## 📊 Statistiques du projet
 
 - **Nombre total de fichiers** : ~50 fichiers
-- **Lignes de code estimées** : ~3000-3500 lignes
 - **Fichiers headers (.h)** : 25
 - **Fichiers implémentation (.cpp)** : 24
 - **Fichiers de configuration** : 3
 
 ## 🔍 Vérification de l'arborescence
 
-Utilisez cette commande pour vérifier votre structure :
+Commande pour vérifier la structure :
 
 ```bash
 tree -L 3 AquariumSimulator/
@@ -96,29 +95,45 @@ tree -L 3 AquariumSimulator/
 Résultat attendu :
 ```
 AquariumSimulator/
-├── CMakeLists.txt
-├── README.md
-├── setup.sh
-├── assets/
-│   ├── fonts/
-│   ├── sounds/
-│   └── textures/
-├── build/
+├── src/
+│   ├── main.cpp                    # Point d'entrée
+│   ├── core/                       # Systèmes de base
+│   │   ├── Game.cpp/h             # Boucle principale
+│   │   ├── Window.cpp/h           # Gestion fenêtre
+│   │   ├── Renderer.cpp/h         # Gestion rendu
+│   │   ├── InputManager.cpp/h     # Gestion entrées
+│   │   └── TimeManager.cpp/h      # Gestion du temps
+│   ├── entities/                   # Entités du jeu
+│   │   ├── Entity.cpp/h           # Classe de base
+│   │   ├── Fish.cpp/h             # Poissons
+│   │   ├── Food.cpp/h             # Nourriture
+│   │   └── Decoration.cpp/h       # Décorations
+│   ├── systems/                    # Systèmes de gameplay
+│   │   ├── FishBehavior.cpp/h     # IA des poissons
+│   │   ├── FeedingSystem.cpp/h    # Système nourrissage
+│   │   ├── CollisionSystem.cpp/h  # Détection collisions
+│   │   └── ParticleSystem.cpp/h   # Système particules
+│   ├── managers/                   # Gestionnaires
+│   │   ├── EntityManager.cpp/h    # Gestion entités
+│   │   ├── ResourceManager.cpp/h  # Gestion ressources
+│   │   └── AquariumManager.cpp/h  # Manager principal
+│   ├── ui/                         # Interface utilisateur
+│   │   ├── ImGuiManager.cpp/h     # Gestionnaire ImGui
+│   │   ├── ShopUI.cpp/h           # Interface boutique
+│   │   ├── StatsPanel.cpp/h       # Panneau stats
+│   │   └── DebugWindow.cpp/h      # Fenêtre debug
+│   └── utils/                      # Utilitaires
+│       ├── Vector2D.cpp/h         # Vecteurs 2D
+│       ├── Math.cpp/h             # Fonctions math
+│       └── Config.h               # Configuration
 ├── external/
-│   ├── SDL/
-│   └── imgui/
-│       ├── backends/
-│       ├── imgui.cpp
-│       ├── imgui.h
-│       └── ...
-└── src/
-    ├── core/
-    ├── entities/
-    ├── main.cpp
-    ├── managers/
-    ├── systems/
-    ├── ui/
-    └── utils/
+│   └── imgui/                      # Bibliothèque ImGui
+├── assets/
+│   ├── textures/                   # Images (à ajouter)
+│   ├── fonts/                      # Polices (à ajouter)
+│   └── sounds/                     # Sons (à ajouter)
+├── CMakeLists.txt
+└── README.md
 ```
 
 ## 🚀 Ordre de création recommandé
@@ -184,7 +199,7 @@ cmake --build . -j4
 
 ## ✅ Tests de validation
 
-Après la compilation, vérifiez que :
+Après la compilation, on vérifiera que :
 - [ ] Le jeu se lance sans erreur
 - [ ] La fenêtre s'affiche correctement
 - [ ] Les poissons nagent
@@ -202,7 +217,9 @@ Après la compilation, vérifiez que :
 **Solution** : Vérifiez que tous les fichiers ImGui sont présents dans `external/imgui/`
 
 ### Erreur "SDL3 not found"
-**Solution** : 
+
+**Solution** :
+
 ```bash
 export CMAKE_PREFIX_PATH=/usr/local
 cmake ..
@@ -235,5 +252,3 @@ target_compile_options(AquariumSimulator PRIVATE -Wno-conversion)
 6. Créer un système de niveaux
 
 ---
-
-**Bonne chance pour votre projet ! 🚀🐠**

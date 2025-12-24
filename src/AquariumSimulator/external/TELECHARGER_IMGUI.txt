@@ -1,0 +1,23 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║  TÉLÉCHARGER IMGUI ICI                                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+Exécutez dans ce dossier (external/) :
+
+    git clone https://github.com/ocornut/imgui.git
+
+Ou téléchargez manuellement depuis :
+https://github.com/ocornut/imgui
+
+La structure devrait être :
+external/
+└── imgui/
+    ├── imgui.h
+    ├── imgui.cpp
+    ├── backends/
+    │   ├── imgui_impl_sdl3.h
+    │   ├── imgui_impl_sdl3.cpp
+    │   ├── imgui_impl_sdlrenderer3.h
+    │   └── imgui_impl_sdlrenderer3.cpp
+    └── ...

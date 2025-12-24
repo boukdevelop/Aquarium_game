@@ -1,4 +1,3 @@
-// ========== AquariumManager.cpp ==========
 #include "AquariumManager.h"
 #include "utils/Config.h"
 #include "utils/Math.h"

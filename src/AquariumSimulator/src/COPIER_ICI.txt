@@ -1,0 +1,16 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║  COPIEZ TOUS LES FICHIERS .h ET .cpp ICI                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+Depuis les artifacts de la conversation Claude, copiez :
+
+1. main.cpp (dans ce dossier)
+2. Tous les fichiers dans core/
+3. Tous les fichiers dans entities/
+4. Tous les fichiers dans systems/
+5. Tous les fichiers dans managers/
+6. Tous les fichiers dans ui/
+7. Tous les fichiers dans utils/
+
+Total : environ 50 fichiers à copier

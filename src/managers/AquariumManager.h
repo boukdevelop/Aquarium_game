@@ -1,4 +1,3 @@
-// ========== AquariumManager.h ==========
 #pragma once
 #include "EntityManager.h"
 #include "systems/FishBehavior.h"

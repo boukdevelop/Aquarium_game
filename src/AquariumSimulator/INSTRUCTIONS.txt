@@ -1,0 +1,79 @@
+╔══════════════════════════════════════════════════════════════╗
+║         AQUARIUM SIMULATOR - INSTRUCTIONS                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+📦 CONTENU DU PROJET
+--------------------
+Ce dossier contient la structure de base du projet Aquarium Simulator.
+
+⚠️  FICHIERS MANQUANTS IMPORTANTS
+----------------------------------
+Pour que le projet soit COMPLET, vous devez ajouter les fichiers suivants
+que j'ai créés dans les artifacts de notre conversation :
+
+1. TOUS les fichiers .h et .cpp dans src/
+   (Copiez-les depuis les artifacts de la conversation)
+
+2. Télécharger ImGui :
+   cd external
+   git clone https://github.com/ocornut/imgui.git
+
+3. Installer SDL3 :
+   Suivez les instructions dans README.md
+
+📋 LISTE DES FICHIERS À COPIER DEPUIS LES ARTIFACTS
+----------------------------------------------------
+
+src/
+├── main.cpp
+├── core/
+│   ├── Game.h / Game.cpp
+│   ├── Window.h / Window.cpp
+│   ├── Renderer.h / Renderer.cpp
+│   ├── InputManager.h / InputManager.cpp
+│   └── TimeManager.h / TimeManager.cpp
+├── entities/
+│   ├── Entity.h / Entity.cpp
+│   ├── Fish.h / Fish.cpp
+│   ├── Food.h / Food.cpp
+│   └── Decoration.h / Decoration.cpp
+├── systems/
+│   ├── FishBehavior.h / FishBehavior.cpp
+│   ├── FeedingSystem.h / FeedingSystem.cpp
+│   ├── CollisionSystem.h / CollisionSystem.cpp
+│   └── ParticleSystem.h / ParticleSystem.cpp
+├── managers/
+│   ├── EntityManager.h / EntityManager.cpp
+│   ├── ResourceManager.h / ResourceManager.cpp
+│   └── AquariumManager.h / AquariumManager.cpp
+├── ui/
+│   ├── ImGuiManager.h / ImGuiManager.cpp
+│   ├── ShopUI.h / ShopUI.cpp
+│   ├── StatsPanel.h / StatsPanel.cpp
+│   └── DebugWindow.h / DebugWindow.cpp
+└── utils/
+    ├── Vector2D.h / Vector2D.cpp
+    ├── Math.h / Math.cpp
+    └── Config.h
+
+🔧 ÉTAPES POUR COMPLÉTER LE PROJET
+-----------------------------------
+
+1. Copiez TOUS les fichiers .h et .cpp depuis les artifacts
+2. Téléchargez ImGui dans external/imgui/
+3. Installez SDL3 sur votre système
+4. Exécutez : ./build.sh (Linux/Mac) ou build.bat (Windows)
+5. Lancez : ./build/AquariumSimulator
+
+💡 ASTUCE
+---------
+Retournez dans la conversation avec Claude et copiez/collez le contenu
+de chaque artifact dans le fichier correspondant.
+
+Il y a environ 50 fichiers à copier au total.
+
+📧 BESOIN D'AIDE ?
+------------------
+Consultez README.md, QUICKSTART.md et ARCHITECTURE.md pour plus d'infos.
+
+Bonne chance ! 🐠
