@@ -8,6 +8,12 @@ void Poisson::update(Aquarium &aquarium)
     age++;
     pv--; // Le poisson a faim à chaque tour !
 
+    // GESTION DU COOLDOWN
+    if (cooldownReproduction > 0)
+    {
+        cooldownReproduction--;
+    }
+
     // Influence de la saleté sur la vie
     if (aquarium.getSalete() > 50.0f)
     {
@@ -91,11 +97,11 @@ void Poisson::seDeplacer(Aquarium &aquarium)
 
 void Poisson::seReproduire(Aquarium &aquarium)
 {
-    // Si pas assez d'énergie, pas de reproduction
-    if (pv < 10)
+    // 1. VERIFICATION STRICTE
+    // Il faut 10 PV, mais aussi que le cooldown soit à 0
+    if (pv < 10 || cooldownReproduction > 0)
         return;
 
-    // Cherche un partenaire
     for (int dx = -1; dx <= 1; dx++)
     {
         for (int dy = -1; dy <= 1; dy++)
@@ -109,19 +115,18 @@ void Poisson::seReproduire(Aquarium &aquarium)
             {
                 Poisson *partenaire = static_cast<Poisson *>(voisin);
 
-                // Si sexes opposés
+                // Si sexes opposés ET que le partenaire est aussi dispo (optionnel mais mieux)
                 if (partenaire->sexe != this->sexe)
                 {
-                    // Trouver une case vide pour le bébé (simplifié : n'importe où dans l'aquarium pour l'instant
-                    // ou juste à côté si possible).
-                    // Pour simplifier ici : on ne crée le bébé que s'il y a une case libre adjacente
-                    // ... (logique de placement similaire à l'algue)
 
-                    // On coupe court pour l'exemple :
-                    // Creation bébé aléatoire
+                    // CHANCE DE REPRODUCTION (Pas automatique !)
+                    // 1 chance sur 4 seulement si ils se rencontrent
+                    if (rand() % 4 != 0)
+                        return;
+
                     Sexe sexeBebe = (rand() % 2 == 0) ? Sexe::MALE : Sexe::FEMELLE;
 
-                    // On cherche une case vide aléatoire pour le spawn (simplification grille 4x4)
+                    // Chercher case vide pour le bébé
                     for (int i = 0; i < 4; i++)
                     {
                         for (int j = 0; j < 4; j++)
@@ -129,9 +134,17 @@ void Poisson::seReproduire(Aquarium &aquarium)
                             if (aquarium.getEntityAt(i, j) == nullptr)
                             {
                                 Poisson *bebe = new Poisson(i, j, sexeBebe, "Bebe");
-                                aquarium.ajouterEntity(bebe);
-                                this->pv -= 5; // Coût énergétique
-                                return;
+                                if (aquarium.ajouterEntity(bebe))
+                                {
+                                    // SUCCES :
+                                    // 1. On perd de l'énergie
+                                    this->pv -= 10;
+                                    // 2. On active le cooldown (attendre 10 tours avant de recommencer)
+                                    this->cooldownReproduction = 10;
+                                    // 3. Le partenaire aussi est fatigué (optionnel)
+                                    partenaire->cooldownReproduction = 10;
+                                    return;
+                                }
                             }
                         }
                     }

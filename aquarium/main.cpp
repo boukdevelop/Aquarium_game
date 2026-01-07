@@ -45,14 +45,18 @@ int main(int argc, char *argv[])
     Aquarium aquarium;
 
     // --- Peuplement initial de l'aquarium ---
-    // Ajout d'un poisson Mâle en (0,0)
+    // Ajout d'un poisson Mâle
     aquarium.ajouterEntity(new Poisson(0, 0, Sexe::MALE, "Nemo"));
 
-    // Ajout d'un poisson Femelle en (3,3) pour tester la reproduction plus tard
+    // Ajout d'un poisson Femelle
     aquarium.ajouterEntity(new Poisson(3, 3, Sexe::FEMELLE, "Dory"));
 
-    // Ajout de quelques algues pour la nourriture
-    aquarium.ajouterEntity(new Algue(1, 1));
+    // AJOUTE BEAUCOUP D'ALGUES AU DEPART (Exemple : 5 algues)
+    // Essaye de remplir les cases vides pour voir si elles s'affichent
+    aquarium.ajouterEntity(new Algue(0, 3));
+    aquarium.ajouterEntity(new Algue(1, 2));
+    aquarium.ajouterEntity(new Algue(2, 1));
+    aquarium.ajouterEntity(new Algue(3, 0));
     aquarium.ajouterEntity(new Algue(2, 2));
 
     // 6. Boucle Principale

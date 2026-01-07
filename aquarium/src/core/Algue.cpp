@@ -7,23 +7,26 @@ void Algue::update(Aquarium &aquarium)
     // 1. Vieillissement
     age++;
 
-    // 2. Photosynthèse (Gagne de la vie à chaque tour)
+    // 2. Photosynthèse
     photosynthese();
 
     // 3. Gestion de la mort (si trop vieille ou plus de PV)
-    if (pv <= 0 || age > 20)
+    // On garde 60 pour qu'elle vive longtemps
+    if (pv <= 0 || age > 60)
     {
         isDead = true;
         return;
     }
 
-    // 4. Reproduction (Si assez de PV et un peu de chance)
-    // On tire un nombre entre 0 et 9, si < 2 (20% de chance), elle essaie
-    if (pv > 15 && (rand() % 10 < 2))
+    // 4. Reproduction
+    // On garde ta nouvelle logique (plus de chance : 40%)
+    if (pv > 10 && (rand() % 10 < 4))
     {
         seReproduire(aquarium);
     }
 }
+// <--- ICI la fonction update est finie.
+// Le code qui provoquait l'erreur était ici. Je l'ai supprimé.
 
 void Algue::photosynthese()
 {
@@ -47,24 +50,24 @@ void Algue::seReproduire(Aquarium &aquarium)
             int targetX = x + dx;
             int targetY = y + dy;
 
-            // Vérifie si la case est valide et vide
+            // Vérifie si la case est valide
             if (targetX >= 0 && targetX < Aquarium::WIDTH &&
                 targetY >= 0 && targetY < Aquarium::HEIGHT)
             {
-
+                // Vérifie si la case est vide
                 if (aquarium.getEntityAt(targetX, targetY) == nullptr)
                 {
                     // Création d'une nouvelle algue
-                    // On perd la moitié de ses PV pour créer un enfant
                     Entity *bebe = new Algue(targetX, targetY);
+
                     if (aquarium.ajouterEntity(bebe))
                     {
-                        this->pv /= 2;
-                        return; // On ne fait qu'un bébé à la fois
+                        this->pv /= 2; // Coût de reproduction
+                        return;        // On ne fait qu'un bébé à la fois
                     }
                     else
                     {
-                        delete bebe; // Sécurité si l'ajout a échoué
+                        delete bebe; // Sécurité
                     }
                 }
             }

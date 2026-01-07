@@ -15,13 +15,14 @@ class Poisson : public Entity
 {
 public:
     Sexe sexe;
-    std::string nom; // Juste pour le fun ou le debug
+    std::string nom;          // Juste pour le fun ou le debug
+    int cooldownReproduction; // <--- AJOUTE CETTE LIGNE
 
-    // Constructeur
+    // Modifie le constructeur pour initialiser le cooldown à 0
     Poisson(int px, int py, Sexe s, std::string n = "Nemo")
-        : Entity(px, py, EntityType::POISSON), sexe(s), nom(n)
-    {
-        this->pv = 20; // Un poisson commence avec plus de vie qu'une algue
+        : Entity(px, py, EntityType::POISSON), sexe(s), nom(n), cooldownReproduction(0)
+    { // <--- ICI
+        this->pv = 20;
     }
 
     // Implémentation de la logique spécifique au poisson
