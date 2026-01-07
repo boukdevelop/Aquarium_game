@@ -1,4 +1,6 @@
 #include "../../include/core/Aquarium.hpp"
+#include "../../include/core/Poisson.hpp"
+#include "../../include/core/Algue.hpp"
 #include <algorithm> // Pour std::remove_if
 
 Aquarium::Aquarium() : niveauSalete(0.0f)
@@ -115,6 +117,48 @@ void Aquarium::update()
     {
         grille[e->x][e->y] = e;
     }
+}
+
+void Aquarium::reset()
+{
+    // 1. Supprimer toutes les entités existantes (Nettoyage mémoire)
+    for (Entity *e : entities)
+    {
+        delete e;
+    }
+    entities.clear();
+
+    // 2. Vider la grille (pointeurs à null)
+    for (int i = 0; i < WIDTH; ++i)
+    {
+        for (int j = 0; j < HEIGHT; ++j)
+        {
+            grille[i][j] = nullptr;
+        }
+    }
+
+    // 3. Remettre la saleté à 0
+    niveauSalete = 0.0f;
+
+    // 4. Remettre la population de départ
+    initialiser();
+}
+
+void Aquarium::initialiser()
+{
+    // C'est ici qu'on définit le scénario de départ
+    // (Copie collé amélioré de ce qu'on avait dans le main)
+
+    // Poissons
+    ajouterEntity(new Poisson(0, 0, Sexe::MALE, "Nemo"));
+    ajouterEntity(new Poisson(3, 3, Sexe::FEMELLE, "Dory"));
+
+    // Algues (plus nombreuses pour l'équilibre)
+    ajouterEntity(new Algue(0, 3));
+    ajouterEntity(new Algue(1, 2));
+    ajouterEntity(new Algue(2, 1));
+    ajouterEntity(new Algue(3, 0));
+    ajouterEntity(new Algue(2, 2));
 }
 
 int Aquarium::getNombrePoissons() const

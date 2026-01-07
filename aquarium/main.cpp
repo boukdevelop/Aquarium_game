@@ -45,11 +45,7 @@ int main(int argc, char *argv[])
     Aquarium aquarium;
 
     // --- Peuplement initial de l'aquarium ---
-    // Ajout d'un poisson Mâle
-    aquarium.ajouterEntity(new Poisson(0, 0, Sexe::MALE, "Nemo"));
-
-    // Ajout d'un poisson Femelle
-    aquarium.ajouterEntity(new Poisson(3, 3, Sexe::FEMELLE, "Dory"));
+    aquarium.initialiser();
 
     // AJOUTE BEAUCOUP D'ALGUES AU DEPART (Exemple : 5 algues)
     // Essaye de remplir les cases vides pour voir si elles s'affichent

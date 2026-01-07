@@ -64,6 +64,19 @@ void GuiManager::Render(Aquarium &aquarium)
         aquarium.nettoyer();
     }
 
+    // --- AJOUT DU BOUTON RESET ---
+    ImGui::Separator();
+    // On met le bouton en rouge pour faire attention (optionnel)
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+
+    if (ImGui::Button("REINITIALISER LA SIMULATION"))
+    {
+        aquarium.reset();
+    }
+
+    ImGui::PopStyleColor();
+    // -----------------------------
+
     ImGui::End();
 }
 
