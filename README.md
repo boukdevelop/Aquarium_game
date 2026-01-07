@@ -1,5 +1,3 @@
-***
-
 # 🐟 Projet Aquarium - Simulation de l'intégralité d'un Aquarium
 
 Ce projet est une simulation d'écosystème aquatique réalisée en **C++** utilisant la bibliothèque **SDL3** pour le rendu graphique et **Dear ImGui** pour l'interface de contrôle.
