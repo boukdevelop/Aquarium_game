@@ -11,17 +11,18 @@ Il a été réalisé dans le cadre académique par l'étudiant **BOUKALA BONOKO 
 *   **Système Vivant :** Une simulation de la vie d'un **Poissons** (Mâles/Femelles) et d'**Algues**.
 *   **Déplacement :** Les poissons se déplacent aléatoirement dans l'aquarium et de façon non controlée.
 *   **Cycle de vie :**
-    *   Faim (Perte de PV, besoin de manger des algues).
+    *   Faim : Lorsqu'un poisson a faim, il perd des Point de vie et pour en recupérer il mange des algues, afin d'avoir de l'énergie.
     *   Vieillissement et Mort.
-    *   **Reproduction sexueé** : Rencontre Mâle/Femelle avec conditions (énergie, cooldown).
-*   **Algues :** Photosynthèse (gain de PV) et reproduction spontanée.
+    *   **Reproduction sexueé** : Pour se reproduire, un mal et une femelle doivent se rencontrer et de cette rencontre ressort donc un bébé poisson en fonction de leur énergie avec conditions (énergie, cooldown).
+*   **Algues :** Les algues reçoivent de l'énergie directement du soleil et se reproduisent avant de mourrir.
 
 ### ⚡ Fonctionnalités Secondaires & Gestion
+
 *   **Interface Graphique (ImGui) :**
     *   Suivi du nombre de poissons/algues en temps réel.
-    *   Bouton **"Nourrir"** (Soigne les entités).
-    *   Bouton **"Nettoyer"** (Retire la saleté).
-    *   Bouton **"Réinitialiser"** (Relance la simulation à zéro).
+    *   Bouton **"Nourrir"** Ce bouton permet de soigner les différentes entités présentes dans l'aquarium.
+    *   Bouton **"Nettoyer"** Cette foncationnalité permet de nettoyer l'aquarium et d'y retirer toutes les saletés qui y sont presentes.
+    *   Bouton **"Réinitialiser"** Cette fonctionnalité relance le jeu à Zéro.
 *   **Saleté :** L'eau se trouble avec le temps (filtre visuel vert), affectant la santé des poissons.
 *   **Contrôles Clavier :**
     *   `N` : Nettoyer l'aquarium.
