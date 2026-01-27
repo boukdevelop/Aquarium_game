@@ -35,7 +35,7 @@ void GuiManager::NewFrame()
 void GuiManager::Render(Aquarium &aquarium)
 {
     // Définition de la fenêtre ImGui
-    ImGui::Begin("Gestion Aquarium");
+    ImGui::Begin("Gestion Aquarium(Ultra simple)");
 
     ImGui::Text("Simulation en cours...");
     ImGui::Separator();
@@ -75,7 +75,6 @@ void GuiManager::Render(Aquarium &aquarium)
     }
 
     ImGui::PopStyleColor();
-    // -----------------------------
 
     ImGui::End();
 }

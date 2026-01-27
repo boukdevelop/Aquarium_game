@@ -6,14 +6,14 @@
 #include "Entity.hpp"
 #include "Poisson.hpp"
 #include "Algue.hpp"
-// Tu ajouteras #include "Algue.hpp" quand on le créera
+// Ajouter #include "Algue.hpp" apres creation de la classe Algue
 
 class Aquarium
 {
 public:
     // Constantes de la grille (4x4 comme demandé)
-    static const int WIDTH = 4;
-    static const int HEIGHT = 4;
+    static const int WIDTH = 7;
+    static const int HEIGHT = 7;
 
 private:
     // La grille contient des pointeurs vers les entités (ou nullptr si vide)

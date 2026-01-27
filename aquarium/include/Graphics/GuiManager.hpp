@@ -4,9 +4,6 @@
 #include <SDL3/SDL.h>
 #include "../core/Aquarium.hpp"
 
-// Ces includes seront nécessaires dans le .cpp, mais on peut les éviter ici
-// pour ne pas alourdir la compilation si ce n'est pas nécessaire.
-
 class GuiManager
 {
 public:
@@ -17,7 +14,7 @@ public:
     static void ProcessEvent(const SDL_Event *event);
 
     // Construit l'interface (les boutons, les textes)
-    // On passe l'aquarium en référence modifiable pour pouvoir agir dessus (Bouton "Nourrir")
+    // Je passe l'aquarium en référence modifiable pour pouvoir agir dessus (Bouton "Nourrir")
     static void Render(Aquarium &aquarium);
 
     // Nettoie ImGui à la fermeture

@@ -20,7 +20,7 @@ private:
     float cellHeight;
 
 public:
-    // On initialise avec le renderer de la fenêtre
+    // J'initialise avec le renderer de la fenêtre
     Renderer(SDL_Renderer *ren, int windowWidth, int windowHeight);
     ~Renderer();
 

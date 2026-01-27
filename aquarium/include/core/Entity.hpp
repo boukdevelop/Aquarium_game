@@ -8,7 +8,7 @@ enum class EntityType
     ALGUE
 };
 
-// Forward declaration (on dit que la classe Aquarium existe, on verra les détails plus tard)
+// Forward declaration (verification de la classe Aquarium existe)
 class Aquarium;
 
 class Entity

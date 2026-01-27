@@ -1,14 +1,15 @@
 # 🐟 Projet Aquarium - Simulation de l'intégralité d'un Aquarium
 
-Ce projet est une simulation d'écosystème aquatique réalisée en **C++** utilisant la bibliothèque **SDL3** pour le rendu graphique et **Dear ImGui** pour l'interface de contrôle.
+Ce projet est une simulation de l'ecosysteme d'un ocean ou d'un aquarium simple réalisée en **C++** utilisant la bibliothèque **SDL3** pour le rendu graphique et **Dear ImGui** pour l'interface de contrôle.
 
 Il a été réalisé dans le cadre académique par l'étudiant **BOUKALA BONOKO FRANCK GABRIEL**.
 
 ## 📋 Fonctionnalités
 
 ### ⚙ Fonctionnalités Principales (Grille 4x4)
-*   **Système Vivant :** Simulation de **Poissons** (Mâles/Femelles) et d'**Algues**.
-*   **Déplacement :** Les poissons se déplacent aléatoirement dans l'aquarium.
+
+*   **Système Vivant :** Une simulation de la vie d'un **Poissons** (Mâles/Femelles) et d'**Algues**.
+*   **Déplacement :** Les poissons se déplacent aléatoirement dans l'aquarium et de façon non controlée.
 *   **Cycle de vie :**
     *   Faim (Perte de PV, besoin de manger des algues).
     *   Vieillissement et Mort.
@@ -68,7 +69,7 @@ Ouvrez un terminal à la racine du projet et lancez cette commande pour compiler
 
 ```bash
 mkdir build
-g++ main.cpp src/core/*.cpp src/Graphics/*.cpp libs/Imgui/*.cpp libs/Imgui/backends/imgui_impl_sdl3.cpp libs/Imgui/backends/imgui_impl_sdlrenderer3.cpp -o build/mon_aquarium.exe -I include -I libs/SDL3/include -I libs/Imgui -I libs/Imgui/backends -L libs/SDL3/lib -lSDL3
+g++ main.cpp src/core/*.cpp src/Graphics/*.cpp libs/Imgui/*.cpp libs/Imgui/backends/imgui_impl_sdl3.cpp libs/Imgui/backends/imgui_impl_sdlrenderer3.cpp -o buid/mon_aquarium.exe -I include -I libs/SDL3/include -I libs/Imgui -I libs/Imgui/backends -L libs/SDL3/lib -lSDL3
 ```
 
 ### 3. Exécution

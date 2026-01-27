@@ -25,8 +25,6 @@ void Algue::update(Aquarium &aquarium)
         seReproduire(aquarium);
     }
 }
-// <--- ICI la fonction update est finie.
-// Le code qui provoquait l'erreur était ici. Je l'ai supprimé.
 
 void Algue::photosynthese()
 {

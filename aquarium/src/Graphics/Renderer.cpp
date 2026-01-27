@@ -71,7 +71,7 @@ void Renderer::draw(const Aquarium &aquarium)
 
 void Renderer::drawGrid()
 {
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255); // Gris foncé
+    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 200); // Gris
 
     // Lignes verticales
     for (int i = 1; i < Aquarium::WIDTH; ++i)
@@ -106,7 +106,7 @@ void Renderer::drawEntity(Entity *entity, int x, int y)
         }
         else
         {
-            SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255); // Rouge saumon
+            SDL_SetRenderDrawColor(renderer, 250, 100, 100, 205); // Rouge
             SDL_RenderFillRect(renderer, &dstRect);
             return;
         }

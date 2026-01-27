@@ -20,7 +20,7 @@ void Poisson::update(Aquarium &aquarium)
         pv--; // Perd un PV supplémentaire si c'est sale
     }
 
-    if (pv <= 0 || age > 40)
+    if (pv <= 0 || age > 60)
     { // Meurt de faim ou de vieillesse
         isDead = true;
         return;
@@ -83,12 +83,6 @@ void Poisson::seDeplacer(Aquarium &aquarium)
         if (aquarium.getEntityAt(newX, newY) == nullptr)
         {
             // Mise à jour de la grille dans l'aquarium (manuellement ici pour simplifier)
-            // Idéalement l'aquarium devrait avoir une méthode moveEntity()
-            // Pour l'instant, on change juste les coordonnées, l'Aquarium mettra à jour sa grille au prochain tour
-
-            // Note: Pour une grille stricte, il faut prévenir l'aquarium :
-            // Cette partie est délicate sans méthode moveEntity dans Aquarium,
-            // mais l'Aquarium reconstruit souvent sa grille basée sur les coord x,y
             x = newX;
             y = newY;
         }
@@ -121,15 +115,15 @@ void Poisson::seReproduire(Aquarium &aquarium)
 
                     // CHANCE DE REPRODUCTION (Pas automatique !)
                     // 1 chance sur 4 seulement si ils se rencontrent
-                    if (rand() % 4 != 0)
+                    if (rand() % 2 != 0)
                         return;
 
                     Sexe sexeBebe = (rand() % 2 == 0) ? Sexe::MALE : Sexe::FEMELLE;
 
                     // Chercher case vide pour le bébé
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 2; i++)
                     {
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < 2; j++)
                         {
                             if (aquarium.getEntityAt(i, j) == nullptr)
                             {
